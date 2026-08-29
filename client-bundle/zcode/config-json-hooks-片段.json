@@ -1,0 +1,38 @@
+// superpowers 的 ZCode SessionStart hook 注册。合并进 ~/.zcode/cli/config.json:
+//  A. config.json 不存在(新机器):直接把本文件内容存成该文件即可;
+//  B. 已有 config.json(里面已注册过其他 hook):只把
+//     "SessionStart": [ ... ] 这一块加进 "hooks" -> "events" 里,其余别动。
+// 注意:
+//  - "enabled": true 必须保留——ZCode 配置文件里的 hooks 默认关闭,不写不跑
+//    (已开启过就不用再改);
+//  - process 类型 = argv 直调不过 shell,Windows 上最稳;timeoutMs 是毫秒;
+//  - command 用 Git for Windows 自带 bash 的标准安装路径;装在别处就改成实际路径;
+//  - args 里的脚本路径 = superpowers 本地仓库 hooks/ 下的适配版脚本
+//    (session-start-zcode.sh),把 <superpowers仓库> 占位符换成你的实际仓库
+//    路径即可(Windows 路径一律双反斜杠);
+//  - matcher 默认省略 = 所有会话来源都触发,最稳。上游 hooks.json 用
+//    "matcher": "startup|clear|compact"(排除 resume),ZCode 支持正则 matcher,
+//    想对齐上游可以加,但若 ZCode 未给 SessionStart 传来源值,带 matcher 会
+//    永不触发——省略是安全选择。
+{
+  "hooks": {
+    "enabled": true,
+    "events": {
+      "SessionStart": [
+        {
+          "hooks": [
+            {
+              "type": "process",
+              "command": "C:\\Program Files\\Git\\bin\\bash.exe",
+              "args": [
+                "<superpowers仓库>\\hooks\\session-start-zcode.sh"
+              ],
+              "timeoutMs": 10000,
+              "statusMessage": "superpowers 引导注入"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
