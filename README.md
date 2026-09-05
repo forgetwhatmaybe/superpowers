@@ -16,6 +16,10 @@ client-bundle/
 │   ├── session-startup-superpowers.md  注入进 awareness/main/AGENTS.md 的 Session Startup 段
 │   └── deploy.ps1            拷贝 14 技能到 ~/.qwenworkcn/skills + 幂等写入 AGENTS.md
 ├── trae-work/               TraeWork:无 hooks 系统 → 全局规则注入(每轮) + deploy.ps1
+├── workbuddy/              WorkBuddy:SessionStart hook 注入(2026-09-05 新增)
+│   ├── WorkBuddy-快速部署.md 主文档:原理、步骤、验证、差异速查
+│   ├── deploy.py            拷贝 14 技能 + 注册 hook + 链路自检 + 卸载(跨机器,不绑盘符)
+│   └── hooks/session-start-workbuddy.sh  适配版引导脚本(PLUGIN_ROOT 取脚本所在目录)
 └── zcode/                   ZCode:SessionStart hook 注入(2026-08-29 新增)
     ├── ZCode-快速部署.md    主文档:原理、步骤、验证、差异速查
     ├── config-json-hooks-片段.json   合并进 ~/.zcode/cli/config.json 的 hook 注册
@@ -30,6 +34,7 @@ client-bundle/
 | ZCode | `SessionStart` hook(`~/.zcode/cli/config.json`)+ `~/.agents/skills/` 技能 | ✅ 已配置并验证 |
 | TraeWork | 全局 user rule(每轮注入,等效替代 SessionStart) | ✅ 已配置 |
 | 千问办公(QwenWork) | 无 hooks → 全局 `~/.qwenworkcn/awareness/main/AGENTS.md`(每会话自动加载,等效 SessionStart)+ `~/.qwenworkcn/skills/` 技能 | ✅ 已配置并验证 |
+| WorkBuddy | `SessionStart` hook(`~/.workbuddy/settings.json`)+ `~/.workbuddy/skills/` 技能 | ✅ 已配置并验证 |
 
 技能共享:ZCode 用软链接指向本地 superpowers 仓库 clone(`<superpowers仓库>`,
 即你自己 clone 下来的本地路径,git pull 即升级);TraeWork、千问办公(QwenWork)用
