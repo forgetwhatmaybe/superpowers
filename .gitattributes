@@ -1,0 +1,2 @@
+# Preserve exact blob bytes for the shared owner assets across every checkout.
+/client-bundle/shared-assets/** -text
